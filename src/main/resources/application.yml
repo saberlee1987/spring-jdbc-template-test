@@ -1,0 +1,63 @@
+server:
+  port: 9500
+  max-http-header-size: 512000
+  jetty:
+    threads:
+      min: 100
+      max: 3000
+      idle-timeout: 10000
+    connection-idle-timeout: 10000
+    accesslog:
+      enabled: true
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+    session:
+      cookie:
+        http-only: true
+      timeout: 15
+      tracking-modes: COOKIE
+
+spring:
+  application:
+    name: spring-jdbc-template-test
+  datasource:
+    driver-class-name: org.h2.Driver
+    hikari:
+      jdbc-url: jdbc:h2:mem:test
+      username: sa
+      password: sa
+      connection-timeout: 10000
+      idle-timeout: 10000
+      validation-timeout: 10000
+      login-timeout: 10000
+      max-lifetime: 10000
+      minimum-idle: 10
+      maximum-pool-size: 35
+
+service:
+  api:
+    base-path: /services/spring-jdbc
+  swagger:
+    path: '/spring-jdbc-template/v3/api-docs'
+    title: 'Spring jdbc template'
+    version: 'version1.0.1-1401/01/29'
+    description: 'This is test for spring jdbc'
+
+springdoc:
+  swagger-ui:
+    display-operation-id: true
+    display-request-duration: true
+    disable-swagger-default-url: true
+    path: /swagger-ui.html
+
+  api-docs:
+    path: ${service.swagger.path}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
