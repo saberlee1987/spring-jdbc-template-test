@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
-
 @Repository
 public class PersonRepositoryImpl implements PersonRepository {
 	
@@ -22,7 +21,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 	
 	@Override
 	public Optional<PersonEntity> addPerson(PersonDto dto) {
-		Optional<PersonDto> optionalPersonDto = findPersonWithNationalCode(dto.getNationalCode());
+		Optional<PersonEntity> optionalPersonDto = findPersonWithNationalCode(dto.getNationalCode());
 		if (optionalPersonDto.isPresent()) {
 			throw new ResourceDuplicationException(String.format("this Person with nationalCode %s already exist", dto.getNationalCode()));
 		}
@@ -32,8 +31,8 @@ public class PersonRepositoryImpl implements PersonRepository {
 	}
 	
 	@Override
-	public Optional<PersonDto> findPersonByNationalCode(String nationalCode) {
-		Optional<PersonDto> optionalPersonDto = findPersonWithNationalCode(nationalCode);
+	public Optional<PersonEntity> findPersonByNationalCode(String nationalCode) {
+		Optional<PersonEntity> optionalPersonDto = findPersonWithNationalCode(nationalCode);
 		if (optionalPersonDto.isEmpty()) {
 			throw new ResourceNotFoundException(String.format("this Person with nationalCode %s does not exist", nationalCode));
 		}
@@ -41,12 +40,12 @@ public class PersonRepositoryImpl implements PersonRepository {
 	}
 	
 	@Override
-	public Optional<PersonDto> updatePersonByNationalCode(PersonDto personDto, String nationalCode) {
-		Optional<PersonDto> optionalPersonDto = findPersonWithNationalCode(nationalCode);
+	public Optional<PersonEntity> updatePersonByNationalCode(PersonDto personDto, String nationalCode) {
+		Optional<PersonEntity> optionalPersonDto = findPersonWithNationalCode(nationalCode);
 		if (optionalPersonDto.isEmpty()) {
 			throw new ResourceNotFoundException(String.format("this Person with nationalCode %s does not exist", nationalCode));
 		}
-		PersonDto resultPersonDto = optionalPersonDto.get();
+		PersonEntity resultPersonDto = optionalPersonDto.get();
 		resultPersonDto.setFirstName(personDto.getFirstName());
 		resultPersonDto.setLastName(personDto.getLastName());
 		resultPersonDto.setNationalCode(personDto.getNationalCode());
@@ -63,11 +62,10 @@ public class PersonRepositoryImpl implements PersonRepository {
 		return findPersonByNationalCode(nationalCode);
 		
 	}
-	
 	@Override
 	public PersonResponse findAllPersons() {
-		List<PersonDto> personDtoList = this.jdbcTemplate.query("select * from " + TABLE_NAME
-				, new PersonRowMapper());
+		List<PersonEntity> personDtoList = this.jdbcTemplate.query("select * from " + TABLE_NAME
+				, new PersonEntityRowMapper());
 		PersonResponse response = new PersonResponse();
 		response.setPersons(personDtoList);
 		return response;
@@ -75,7 +73,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 	
 	@Override
 	public Optional<DeleteResponseDto> deletePersonByNationalCode(String nationalCode) {
-		Optional<PersonDto> optionalPersonDto = findPersonByNationalCode(nationalCode);
+		Optional<PersonEntity> optionalPersonDto = findPersonByNationalCode(nationalCode);
 		if (optionalPersonDto.isEmpty()) {
 			throw new ResourceNotFoundException(String.format("this Person with nationalCode %s does not exist", nationalCode));
 		}
@@ -92,10 +90,9 @@ public class PersonRepositoryImpl implements PersonRepository {
 		return entityList.isEmpty() ? Optional.empty() : Optional.of(entityList.get(0));
 	}
 	
-	private Optional<PersonDto> findPersonWithNationalCode(String nationalCode) {
-		List<PersonDto> entityList = this.jdbcTemplate.query("select * from " + TABLE_NAME + " where nationalCode=?"
-				, new PersonRowMapper(), nationalCode);
+	private Optional<PersonEntity> findPersonWithNationalCode(String nationalCode) {
+		List<PersonEntity> entityList = this.jdbcTemplate.query("select * from " + TABLE_NAME + " where nationalCode=?"
+				, new PersonEntityRowMapper(), nationalCode);
 		return entityList.isEmpty() ? Optional.empty() : Optional.of(entityList.get(0));
 	}
-	
 }

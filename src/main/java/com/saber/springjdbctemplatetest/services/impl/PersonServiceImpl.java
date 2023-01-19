@@ -37,29 +37,29 @@ public class PersonServiceImpl implements PersonService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public PersonDto findPersonByNationalCode(String nationalCode) {
+	public PersonEntity findPersonByNationalCode(String nationalCode) {
 		log.info("Request for find person with nationalCode {}", nationalCode);
-		Optional<PersonDto> personDtoOptional = personRepository.findPersonByNationalCode(nationalCode);
-		if (personDtoOptional.isEmpty()) {
+		Optional<PersonEntity> personEntityOptional = personRepository.findPersonByNationalCode(nationalCode);
+		if (personEntityOptional.isEmpty()) {
 			throw new OperationException("Error occurred for findPersonByNationalCode operation Please contact by admin system");
 		}
-		PersonDto personDto = personDtoOptional.get();
-		log.info("Response for find person with nationalCode {} with body {}", nationalCode, personDto);
-		return personDto;
+		PersonEntity responseDto = personEntityOptional.get();
+		log.info("Response for find person with nationalCode {} with body {}", nationalCode, responseDto);
+		return responseDto;
 	}
 	
 	@Override
 	@Transactional
-	public PersonDto updatePersonByNationalCode(PersonDto personDto, String nationalCode) {
+	public PersonEntity updatePersonByNationalCode(PersonDto personDto, String nationalCode) {
 		log.info("Request for update person with nationalCode {} with body {}", nationalCode, personDto);
 		
-		Optional<PersonDto> personDtoOptional = personRepository.updatePersonByNationalCode(personDto, nationalCode);
-		if (personDtoOptional.isEmpty()) {
+		Optional<PersonEntity> personEntityOptional = personRepository.updatePersonByNationalCode(personDto, nationalCode);
+		if (personEntityOptional.isEmpty()) {
 			throw new OperationException("Error occurred for updatePersonByNationalCode operation Please contact by admin system");
 		}
-		PersonDto responseDto = personDtoOptional.get();
+		PersonEntity responseDto = personEntityOptional.get();
 		log.info("Response for find person with nationalCode {} with body {}", nationalCode, responseDto);
-		return personDto;
+		return responseDto;
 	}
 	
 	@Override

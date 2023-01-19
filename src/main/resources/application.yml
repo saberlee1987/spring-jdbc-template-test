@@ -1,6 +1,6 @@
 server:
   port: 9500
-  max-http-header-size: 512000
+  max-http-header-size: 756000
   jetty:
     threads:
       min: 100
@@ -13,11 +13,6 @@ server:
     encoding:
       force: true
       charset: UTF-8
-    session:
-      cookie:
-        http-only: true
-      timeout: 15
-      tracking-modes: COOKIE
 
 spring:
   application:
@@ -42,7 +37,7 @@ service:
   swagger:
     path: '/spring-jdbc-template/v3/api-docs'
     title: 'Spring jdbc template'
-    version: 'version1.0.1-1401/01/29'
+    version: 'version1.0.2-1401/10/29'
     description: 'This is test for spring jdbc'
 
 springdoc:

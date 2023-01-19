@@ -7,8 +7,8 @@ import com.saber.springjdbctemplatetest.entities.PersonEntity;
 
 public interface PersonService {
 	PersonEntity addPerson(PersonDto dto);
-	PersonDto findPersonByNationalCode(String nationalCode);
-	PersonDto updatePersonByNationalCode(PersonDto personDto,String nationalCode);
+	PersonEntity findPersonByNationalCode(String nationalCode);
+	PersonEntity updatePersonByNationalCode(PersonDto personDto,String nationalCode);
 	PersonResponse findAllPersons();
 	DeleteResponseDto deletePersonByNationalCode(String nationalCode);
 }

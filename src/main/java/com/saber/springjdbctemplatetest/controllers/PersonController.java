@@ -66,7 +66,7 @@ public class PersonController {
 			})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Success",
-					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PersonDto.class))}),
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PersonEntity.class))}),
 			@ApiResponse(responseCode = "400", description = "BAD_REQUEST",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
 			@ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
@@ -77,7 +77,7 @@ public class PersonController {
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))})
 		
 	})
-	public ResponseEntity<PersonDto> findByNationalCode(@PathVariable(name = "nationalCode")
+	public ResponseEntity<PersonEntity> findByNationalCode(@PathVariable(name = "nationalCode")
 														@NotBlank(message = "nationalCode is Required")
 														@Size(min = 10, max = 10, message = "nationalCode must be 10 digit")
 														@Pattern(regexp = "\\d+", message = "Please Enter correct nationalCode")
@@ -86,8 +86,8 @@ public class PersonController {
 																String nationalCode) {
 		
 		log.info("Request for findByNationalCode  ====> {}", nationalCode);
-		
-		PersonDto response = this.personService.findPersonByNationalCode(nationalCode);
+
+		PersonEntity response = this.personService.findPersonByNationalCode(nationalCode);
 		log.info("Response for findByNationalCode  ====> {}", response);
 		return ResponseEntity.ok(response);
 	}
@@ -113,11 +113,8 @@ public class PersonController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@PutMapping(value = "/update/{nationalCode}")
+	@PutMapping(value = "/update")
 	@Operation( summary = "updateByNationalCode", description = "updateByNationalCode api", method = "PUT"
-			, parameters = {
-			@Parameter(name = "nationalCode", in = ParameterIn.PATH, required = true, example = "0079028748", description = "nationalCode")
-	}
 			, requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = PersonDto.class)
 					, examples = {@ExampleObject(name = "person", value = "{\"firstName\": \"saber\",\"lastName\": \"Azizi\",\"nationalCode\": \"0079028748\",\"age\": 34,\"email\": \"saberazizi66@yahoo.com\",\"mobile\": \"09365627895\"}")}
@@ -125,7 +122,7 @@ public class PersonController {
 	))
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Success",
-					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PersonDto.class))}),
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PersonEntity.class))}),
 			@ApiResponse(responseCode = "400", description = "BAD_REQUEST",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))}),
 			@ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
@@ -136,7 +133,7 @@ public class PersonController {
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDto.class))})
 		
 	})
-	public ResponseEntity<PersonDto> updatePersonByNationalCode(@PathVariable(name = "nationalCode")
+	public ResponseEntity<PersonEntity> updatePersonByNationalCode(@PathVariable(name = "nationalCode")
 																@NotBlank(message = "nationalCode is Required")
 																@Size(min = 10, max = 10, message = "nationalCode must be 10 digit")
 																@Pattern(regexp = "\\d+", message = "Please Enter correct nationalCode")
@@ -145,8 +142,8 @@ public class PersonController {
 																@RequestBody @Valid
 																		PersonDto dto) {
 		log.info("Request for updatePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, dto);
-		
-		PersonDto response = this.personService.updatePersonByNationalCode(dto,nationalCode);
+
+		PersonEntity response = this.personService.updatePersonByNationalCode(dto,nationalCode);
 		log.info("Response for updatePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, response);
 		return ResponseEntity.ok(response);
 	}

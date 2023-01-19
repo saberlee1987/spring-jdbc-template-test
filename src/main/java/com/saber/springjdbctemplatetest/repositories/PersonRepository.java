@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface PersonRepository {
 	Optional<PersonEntity> addPerson(PersonDto dto);
-	Optional<PersonDto> findPersonByNationalCode(String nationalCode);
-	Optional<PersonDto> updatePersonByNationalCode(PersonDto personDto,String nationalCode);
+	Optional<PersonEntity> findPersonByNationalCode(String nationalCode);
+	Optional<PersonEntity> updatePersonByNationalCode(PersonDto personDto,String nationalCode);
 	PersonResponse findAllPersons();
 	Optional<DeleteResponseDto> deletePersonByNationalCode(String nationalCode);
 	
